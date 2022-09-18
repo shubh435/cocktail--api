@@ -92,7 +92,7 @@ export default class App extends Component<Props, State> {
   }
   render() {
     return (
-      <div className="container">
+      <div className="container mx-auto">
         <div className="flex w-full justify-center gap-6 mt-10">
           <label className="relative block">
             <span className="sr-only">Search</span>
