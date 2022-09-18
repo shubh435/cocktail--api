@@ -125,7 +125,7 @@ export default class App extends Component<Props, State> {
             <div className="flex items-center mt-10 justify-center w-full space-x-2">
               <div
                 className="spinner-border animate-spin inline-block w-12 h-12 border-4 rounded-full
-                text-purple-800 border-purple-600
+                text-purple-800 border-purple-600  animate-pulse
                 "
                 role="status"
               >
