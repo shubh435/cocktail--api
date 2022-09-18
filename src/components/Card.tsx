@@ -14,20 +14,18 @@ export default class Card extends Component<Cocktail, {}> {
       strInstructions,
       strInstructionsDE,
       strInstructionsIT,
-      strInstructionsES,
-      strInstructionsFR,
     } = this.props;
     return (
-      <div className="max-w-sm rounded overflow-hidden shadow-lg space-y-2 mb-10">
+      <div className="max-w-xs rounded overflow-hidden shadow-lg space-x-2 mb-10">
         <img className="w-full" src={strDrinkThumb} alt={idDrink} />
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{strDrink}</div>
           <p className="text-gray-700 text-base">{strGlass}</p>
           <p className="text-gray-700 text-base">{strIngredient1}</p>
           <p className="text-gray-700 text-base">
-            {strInstructions}
-            {strInstructionsDE}
-            {strInstructionsIT},{strInstructionsES},{strInstructionsFR}
+            {strInstructions && strInstructions.slice(0, 15)}...
+            {strInstructionsDE && strInstructionsDE.slice(0, 15)}...
+            {strInstructionsIT && strInstructionsIT.slice(0, 15)}...,
           </p>
         </div>
         <div className="px-6 pt-4 pb-2">

@@ -42,17 +42,14 @@ export default class App extends Component<Props, State> {
       loading: false,
     };
   }
-  handleSearch = async () => {
+  handleSearch = async (inputVl: string) => {
     this.setState({
       loading: true,
     });
-    const res = await axiosInstance.get(
-      `/search.php?s=${this.state.inputValue}`
-    );
+    const res = await axiosInstance.get(`/search.php?s=${inputVl}`);
     if (res.status === 200) {
       this.setState({
         searchCocktail: res.data.drinks,
-        inputValue: "",
         loading: false,
       });
     }
@@ -109,13 +106,20 @@ export default class App extends Component<Props, State> {
                 this.setState({
                   inputValue: e.target.value,
                 });
+
+                this.handleSearch(e.target.value);
               }}
             />
           </label>
           <button
             className="bg-blue-500 hover:bg-blue-700
            text-white font-bold py-2 px-4 rounded"
-            onClick={this.handleSearch}
+            onClick={() => {
+              this.handleSearch(this.state.inputValue);
+              this.setState({
+                inputValue: "",
+              });
+            }}
           >
             click me to search
           </button>
@@ -134,11 +138,11 @@ export default class App extends Component<Props, State> {
             </div>
           </>
         ) : (
-          <>
+          <div className="container mx-auto">
             {this.state.searchCocktail &&
             this.state.searchCocktail.length > 0 ? (
               <section className="mt-10">
-                <div className="flex flex-wrap justify-evenly ">
+                <div className="flex flex-wrap justify-evenly  gap-x-4">
                   {this.state.searchCocktail.map((cocktail) => {
                     const { idDrink } = cocktail;
                     return <Card key={idDrink} {...cocktail} />;
@@ -155,7 +159,7 @@ export default class App extends Component<Props, State> {
                 </div>
               </section>
             )}
-          </>
+          </div>
         )}
       </div>
     );
