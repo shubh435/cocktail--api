@@ -7,6 +7,7 @@ interface State {
   inputValue: string | any;
   searchCocktail: Cocktail[];
   loading: boolean;
+  pageNo: number;
 }
 
 export interface Cocktail {
@@ -40,13 +41,14 @@ export default class App extends Component<Props, State> {
       inputValue: "",
       searchCocktail: [],
       loading: false,
+      pageNo: 1,
     };
   }
   handleSearch = async (inputVl: string) => {
     this.setState({
       loading: true,
     });
-    const res = await axiosInstance.get(`/search.php?s=${inputVl}`);
+    const res = await axiosInstance.get(`1/search.php?s=${inputVl}`);
     if (res.status === 200) {
       this.setState({
         searchCocktail: res.data.drinks,
@@ -58,12 +60,12 @@ export default class App extends Component<Props, State> {
       loading: false,
     });
   };
-  handleFetch = async () => {
+  handleFetch = async (pageNo: number) => {
     this.setState({
       loading: true,
     });
     try {
-      const res = await axiosInstance.get("/search.php?f=a");
+      const res = await axiosInstance.get(`${pageNo}/search.php?f=a`);
 
       if (res.status === 200) {
         this.setState({
@@ -85,7 +87,24 @@ export default class App extends Component<Props, State> {
   };
 
   componentDidMount() {
-    this.handleFetch();
+    this.handleFetch(this.state.pageNo);
+  }
+  componentDidUpdate(
+    prevProps: any,
+    prevState: { cocktails: Cocktail[]; pageNo: number }
+  ): void {
+    if (prevState.pageNo !== this.state.pageNo) {
+      console.log(this.state);
+      this.handleFetch(this.state.pageNo);
+    }
+  }
+  componentWillUnmount(): void {
+    this.setState({
+      cocktails: [],
+      inputValue: "",
+      loading: false,
+      searchCocktail: [],
+    });
   }
   render() {
     return (
@@ -97,7 +116,7 @@ export default class App extends Component<Props, State> {
               <svg className="h-5 w-5 fill-slate-300" viewBox="0 0 20 20"></svg>
             </span>
             <input
-              className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+              className="placeholder:italic placeholder:text-slate-400 block text-black bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
               placeholder="Search for name or word..."
               type="text"
               name="search"
@@ -112,7 +131,7 @@ export default class App extends Component<Props, State> {
             />
           </label>
           <button
-            className="bg-blue-500 hover:bg-blue-700
+            className="bg-red-800 hover:bg-blue-700
            text-white font-bold py-2 px-4 rounded"
             onClick={() => {
               this.handleSearch(this.state.inputValue);
@@ -123,6 +142,17 @@ export default class App extends Component<Props, State> {
           >
             click me to search
           </button>
+          {/* <button
+            className="bg-red-500 hover:bg-blue-700
+           text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              this.setState({
+                pageNo: this.state.pageNo + 1,
+              });
+            }}
+          >
+            increament
+          </button> */}
         </div>
         {this.state.loading ? (
           <>
