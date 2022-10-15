@@ -142,17 +142,6 @@ export default class App extends Component<Props, State> {
           >
             click me to search
           </button>
-          {/* <button
-            className="bg-red-500 hover:bg-blue-700
-           text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              this.setState({
-                pageNo: this.state.pageNo + 1,
-              });
-            }}
-          >
-            increament
-          </button> */}
         </div>
         {this.state.loading ? (
           <>
